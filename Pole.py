@@ -5,7 +5,9 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
-#Создаёт начальное поле, заполненное фоном
+
+
+# Создаёт начальное поле, заполненное фоном
 class Pole(pygame.sprite.Sprite):
     def __init__(self, frames1, frames2, tiles_sprites, pole_sprites, pl_tiles):
         super().__init__()
@@ -17,27 +19,20 @@ class Pole(pygame.sprite.Sprite):
         self.isp_tile = []
         self.frames1 = frames1
         self.frames2 = frames2
-        self.image = pygame.Surface((80,80))
+        self.image = pygame.Surface((80, 80))
         self.image = self.frames2[0]
         self.rect = pygame.Rect(0, 0, 80, 80)
         self.dlin = len(self.frames1)
-        self.not_frames = []
-        for i in range(self.dlin):
-            self.not_frames.append(i)
-        self.pole = []
-        for i in range(self.dlin):
-            a = []
-            for i in range(self.dlin):
-                a.append("")
-            self.pole.append(a)
+        self.not_frames = [i for i in range(self.dlin)]
+        self.pole = [["" for j in range(self.dlin)] for i in range(self.dlin)]
         for i in range(self.dlin):
             for j in range(self.dlin):
                 if self.pole[i][j] == "":
                     self.image = pygame.Surface((80, 80))
-                    if i%2 == 0:
-                        self.image = self.frames2[j%2]
+                    if i % 2 == 0:
+                        self.image = self.frames2[j % 2]
                     else:
-                        self.image = self.frames2[2+ j % 2]
+                        self.image = self.frames2[2 + j % 2]
                     self.rect = self.image.get_rect()
                     self.rect.x = j * 80
                     self.rect.y = i * 80
@@ -56,26 +51,28 @@ class Pole(pygame.sprite.Sprite):
                     pl = Platform(self.image, self.rect.x, self.rect.y)
                     self.tiles_sprites.add(pl)
                     self.pl_tiles.append(pl)
-        #self.plisa = [2,8,5,14,4]
-    #Выбирает номер для следующего тайла
+        # self.plisa = [2,8,5,14,4]
+
+    # Выбирает номер для следующего тайла
     def num(self, r):
         if r == 0:
             num = 0
         else:
             num = random.choice(self.not_frames)
-            #num = self.plisa.pop(-1)
+            # num = self.plisa.pop(-1)
         self.num_of_tile = num
         self.sled_tile()
 
-    #Создаёт картинку для следующего тайла
+    # Создаёт картинку для следующего тайла
     def sled_tile(self):
         self.image = pygame.Surface((80, 80))
         self.image = self.frames1[self.num_of_tile]
 
-    #Выводит новый тайл
+    # Выводит новый тайл
     def new_tile(self, col, row):
         if self.pole[row][col] == "":
-            if self.num_of_tile == 0 or self.pole[row-1][col] != "" or self.pole[row][col-1] != "" or self.pole[row+1][col] != "" or self.pole[row][col+1] != "":
+            if self.num_of_tile == 0 or self.pole[row - 1][col] != "" or self.pole[row][col - 1] != "" or \
+                    self.pole[row + 1][col] != "" or self.pole[row][col + 1] != "":
                 num = self.num_of_tile
                 self.pole[row][col] = num
                 self.not_frames.remove(num)
@@ -97,7 +94,7 @@ class Pole(pygame.sprite.Sprite):
         else:
             return 0
 
-    #Возврящает ход на 1 назад (Удаляет с поля последний поставленный тайл)
+    # Возврящает ход на 1 назад (Удаляет с поля последний поставленный тайл)
     def otmena(self):
         a = self.isp_tile.pop(-1)
         self.num_of_tile = a[0]
@@ -105,9 +102,11 @@ class Pole(pygame.sprite.Sprite):
         self.pole[a[2]][a[1]] = ""
         self.pl_tiles.pop(-1).kill()
 
-#Получает изображение фона и формирует его для показа
+
+# Получает изображение фона и формирует его для показа
 class Fon(pygame.sprite.Sprite):
     frames = []
+
     def __init__(self, images, columns, rows):
         super().__init__()
         self.cut_image(images, columns, rows)
@@ -119,12 +118,15 @@ class Fon(pygame.sprite.Sprite):
                 for i in range(columns):
                     frame_location = (self.rect.w * i, self.rect.h * j)
                     self.frames.append(k.subsurface(pygame.Rect(frame_location, self.rect.size)))
+
     def sbros(self):
         Fon.frames = []
 
-#Получает изображение тайлов и формирует из них список
+
+# Получает изображение тайлов и формирует из них список
 class Tiles(pygame.sprite.Sprite):
     frames = []
+
     def __init__(self, images, columns, rows):
         super().__init__()
         self.cut_image(images, columns, rows)
@@ -137,10 +139,12 @@ class Tiles(pygame.sprite.Sprite):
                 for i in range(columns):
                     frame_location = (self.rect.w * i, self.rect.h * j)
                     self.frames.append(k.subsurface(pygame.Rect(frame_location, self.rect.size)))
+
     def sbros(self):
         Tiles.frames = []
 
-#Спрайт для фона
+
+# Спрайт для фона
 class Platform(pygame.sprite.Sprite):
     def __init__(self, image, x, y):
         super().__init__()
@@ -149,7 +153,8 @@ class Platform(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-#Спрайт для тайла
+
+# Спрайт для тайла
 class Platform_Tile(pygame.sprite.Sprite):
     def __init__(self, image, x, y):
         super().__init__()
@@ -157,6 +162,7 @@ class Platform_Tile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+
 
 if __name__ == "__main__":
     print("Вы запустили этот модуль напрямую (а не импортировали его).")

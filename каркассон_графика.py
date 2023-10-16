@@ -231,14 +231,14 @@ class For_prov():
             return moz
 
     def povorot(self):
-        empty_img = cv2.imread(r"img\player1.png")
+        empty_img = cv2.imread(r"img/player1.png")
         for i in range(80):
             for j in range(80):
                 empty_img[i][j] = self.frames[pole.num_of_tile][80 - j - 1][i]
         self.frames[pole.num_of_tile] = empty_img
 
 
-for_prov = For_prov([r"img\b1_ram.jpg", r"img\b2_ram.jpg", r"img\b3_ram.jpg"], 4, 6)
+for_prov = For_prov([r"img/b1_ram.jpg", r"img/b2_ram.jpg", r"img/b3_ram.jpg"], 4, 6)
 
 doroga_schet = [[], [], [], []]
 
@@ -625,7 +625,7 @@ def new_mipl():
         Mouse_x, Mouse_y = pygame.mouse.get_pos()
         if muse.rect.colliderect(tiles_sprites.sprites()[-1].rect):
             screen.blit(mipls[a].pokaz(Mouse_x, Mouse_y), (Mouse_x - 10, Mouse_y - 10))
-        screen.blit(load_image(["kark.png", ], 1, 1)[0], (width, 80))
+        screen.blit(load_image(["Kark.png", ], 1, 1)[0], (width, 80))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -764,7 +764,7 @@ button1_sprites.add(button1)
 button2_sprites.add(button2)
 player_sprites = pygame.sprite.Group()
 colors = [ORANGE, BLACK, RED, GREEN, BLUE]
-pygame.display.set_icon(pygame.image.load("img/kark.png").convert())
+pygame.display.set_icon(pygame.image.load("img/Kark.png").convert())
 pygame.display.set_caption("Каркассон v.1.0")
 
 
